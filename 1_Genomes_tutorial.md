@@ -35,7 +35,7 @@ To download the genome, click the FTP (**f**ile **t**ransfer **p**rotocol) link 
 
 Do the same for _C. elegans_ and lambda phage, choosing the topmost assembly for each. For the sea cucumber, **copy** the Sea_cuke directory in the course data folder into your own directory.
 
-For the human genome, go to the [Ensembl site](https://ftp.ensembl.org/pub/release-116/fasta/homo_sapiens/dna/). Be sure the correct assembly is shown in the upper left "Genome assembly" pane. Choose "Download DNA sequence (FASTA)". 
+For the human genome, go to the [Ensembl site](https://ftp.ensembl.org/pub/release-116/fasta/homo_sapiens/dna/). Scan the list of files to the soft-masked (sm) version of the primary assembly. You can download it using `wget`.
 
 **Whoa! There are lots of files to choose from. Select the "soft-masked" version (Homo_sapiens.GRCh38.dna_sm.primary_assembly.fa.gz) and download it using `wget`.**
 
