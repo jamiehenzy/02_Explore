@@ -63,7 +63,7 @@ module load sratoolkit/12Dec2024
 for acc in SRR1039508  SRR1039509  SRR1039512  SRR1039513  SRR1039516  SRR1039517  SRR1039520  SRR1039521;
 
 do
-    fasterq-dump --split-files --outdir ./fastq_files "$acc"
+    fasterq-dump --split-files --outdir fastq_files "$acc"
 done
 ```
 When the job has finished (it takes awhile), you'll see a directory called, "fastq_files" that contains **eight pairs** of files, each containing millions of fastq reads. (You might also see that your progress log appears in your error file instead of your output file!)
