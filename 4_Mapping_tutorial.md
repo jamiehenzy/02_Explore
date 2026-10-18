@@ -25,7 +25,7 @@ SRR1039513
 SRR1039520
 SRR1039521
 
-These records correspond to reads from the untreated and treated cells of four different cell lines. Each record has millions of reads. We first have to "prefetch" the records, then convert them into fastq format. To fetch all the records in one run, we need to make a text file with all eight accession numbers, each on a separate line, and name it "accessions.txt". Create this file using nano (or "echo" into a new file).
+These records correspond to reads from the untreated and treated cells of four different cell lines in the "airways" data, where lung cells are exposed to dexamethasone. Each record has millions of reads. We first have to "prefetch" the records, then convert them into fastq format. To fetch all the records in one run, we need to make a text file with all eight accession numbers, each on a separate line, and name it "accessions.txt". Create this file using nano (or "echo" into a new file). (You may have already downloaded these files for an in-class exercise; if so, skip to the "Raw read quality control" step.)
 
 Next we'll write a batch script to run the job on Explorer. Be sure to customize the script to suit your needs.
 
@@ -67,7 +67,7 @@ do
     fasterq-dump --split-files --outdir fastq_files "$acc"
 done
 ```
-When the job has finished (it takes awhile), you'll see a directory called, "fastq_files" that contains **eight pairs** of files, each containing millions of fastq reads. (You might also see that your progress log appears in your error file instead of your output file!)
+When the job has finished (it takes a while), you'll see a directory called, "fastq_files" that contains **eight pairs** of files, each containing millions of fastq reads. (You might also see that your progress log appears in your error file instead of your output file!)
 
 ## Raw read quality control
 
@@ -95,7 +95,7 @@ Write a BATCH script for indexing, and note that it can take several hours for t
 
 #Activate the STAR conda environment (two steps!)
 
-#Run the indexing command (you'll need to customize this to reflect the locations of your files)
+#Run the indexing command (you'll need to customize this to reflect the names and locations of your files)
 STAR --runMode genomeGenerate --genomeFastaFiles Homo_sapiens.GRCh38.dna_sm.primary_assembly.fa --sjdbGTFfile Homo_sapiens.GRCh38.115.gtf --runThreadN 16
 ```
 
@@ -103,7 +103,7 @@ If it works, you'll see sixteen files added to your directory.
 
 ## Map reads to the genome
 
-Let's align the reads to the indexed genome. Once again, **think hard** about how you'll need to customize the command to reflect the location of your files! This is a complicated script and we'll go through the various components in class.
+Let's align the reads to the indexed genome. Once again, **think hard** about how you'll need to customize the commands to reflect the location of your files! This is a complicated script and we'll go through the various components in class.
 
 ```html
 #!/bin/bash
@@ -118,34 +118,35 @@ Let's align the reads to the indexed genome. Once again, **think hard** about ho
 
 # load anaconda and activate star conda environment – you know how to do this!
 
-
 # Directory containing the genome index
 GENOME_DIR="GenomeDir"
 
 # Directory containing the fastq files
 FASTQ_DIR="SRA_work/fastq_files"
 
-# Create output directory if it doesn't exist
-mkdir -p aligned_output
+# Directory for the results
+OUT_DIR="aligned_output"
 
-# Loop through all sample prefixes
-for sample in $(ls ${FASTQ_DIR}/*_1.fastq | sed 's/_1.fastq$//' | xargs -n1 basename); do
-    
-    # Define input files
-    READ1="${FASTQ_DIR}/${sample}_1.fastq"
-    READ2="${FASTQ_DIR}/${sample}_2.fastq"
-    
-    # Define output prefix
-    OUT_PREFIX="aligned_output/${sample}_"
-    
-    # Run STAR alignment
-    STAR --genomeDir ${GENOME_DIR} \
-         --readFilesIn ${READ1} ${READ2} \
+# Create the output directory if it doesn't already exist
+mkdir -p "$OUT_DIR"
+
+# Loop through each read 1 file
+for read1 in "$FASTQ_DIR"/*_1.fastq; do
+
+    # Get the sample name by removing the directory and the _1.fastq ending
+    sample=$(basename "$read1" _1.fastq)
+
+    # The matching read 2 file
+    read2="$FASTQ_DIR/${sample}_2.fastq"
+
+    # Run STAR
+    STAR --genomeDir "$GENOME_DIR" \
+         --readFilesIn "$read1" "$read2" \
          --runThreadN 16 \
-         --outFileNamePrefix ${OUT_PREFIX} \
+         --outFileNamePrefix "$OUT_DIR/${sample}_" \
          --outSAMtype BAM SortedByCoordinate \
          --limitBAMsortRAM 40000000000
-         
+
 done
 
 ```
