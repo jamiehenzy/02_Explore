@@ -6,6 +6,7 @@ For this assignment, you are given less guidance because you are expected to use
 
 In the Genomes tutorial, you learned to download genome sequences from various sources. You also downloaded a couple of files of sequencing reads from GitHub. However, a major repository of sequencing reads is the GEO (Gene Expression Omnibus) database. You can use a tool called sratoolkit, available as a module on Explorer, to download a set of reads from an experiment involving human cell lines. Then you'll align (map) those reads to the indexed human genome sequence. Here's the general workflow:
 
++ download the necessary files
 + assess the quality of the reads and do any necessary modifications
 + index the human genome (with STAR)
 + align the reads (with STAR)
