@@ -160,13 +160,14 @@ Keep troubleshooting until it works! For help, use these resources:
 + Consult with your classmates on the Discussion forum on Canvas
 
 ## Submission
-+ all files associated with tutorial, organized in user-friendly way
-+ all scripts you ran
-+ text file with notes on general impressions of quality score report
++ all files associated with tutorial, organized in user-friendly way, in student directory
++ push all files to Github EXCEPT sequence files (reads, genomes, gtf, etc.)
++ include all scripts you ran
++ include text file with notes on general impressions of quality score report
 
 ## Don't forget! 
 + README file
 + no extraneous lines of text
 + permissions set so that I can access everything
-+ clean front porch
++ clean front porch in student directory
 
